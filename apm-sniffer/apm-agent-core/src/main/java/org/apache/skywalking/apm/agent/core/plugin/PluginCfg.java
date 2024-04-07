@@ -18,6 +18,7 @@
 
 package org.apache.skywalking.apm.agent.core.plugin;
 
+import io.github.pixee.security.BoundedLineReader;
 import org.apache.skywalking.apm.agent.core.plugin.exception.IllegalPluginDefineException;
 import org.apache.skywalking.apm.agent.core.logging.api.ILog;
 import org.apache.skywalking.apm.agent.core.logging.api.LogManager;
@@ -41,7 +42,7 @@ public enum PluginCfg {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             String pluginDefine;
-            while ((pluginDefine = reader.readLine()) != null) {
+            while ((pluginDefine = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                 try {
                     if (pluginDefine.trim().length() == 0 || pluginDefine.startsWith("#")) {
                         continue;

@@ -43,5 +43,15 @@
 
     <properties>
         <shade.package>org.apache.skywalking.apm.dependencies</shade.package>
+        <versions.java-security-toolkit>1.1.3</versions.java-security-toolkit>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.pixee</groupId>
+                <artifactId>java-security-toolkit</artifactId>
+                <version>${versions.java-security-toolkit}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
