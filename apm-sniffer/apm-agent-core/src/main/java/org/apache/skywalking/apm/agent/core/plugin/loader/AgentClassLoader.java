@@ -18,6 +18,8 @@
 
 package org.apache.skywalking.apm.agent.core.plugin.loader;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -99,7 +101,7 @@ public class AgentClassLoader extends ClassLoader {
                 continue;
             }
             try {
-                URL classFileUrl = new URL("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + path);
+                URL classFileUrl = Urls.create("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + path, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 byte[] data;
                 try (final BufferedInputStream is = new BufferedInputStream(
                     classFileUrl.openStream()); final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -124,7 +126,7 @@ public class AgentClassLoader extends ClassLoader {
             JarEntry entry = jar.jarFile.getJarEntry(name);
             if (entry != null) {
                 try {
-                    return new URL("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + name);
+                    return Urls.create("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + name, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 } catch (MalformedURLException ignored) {
                 }
             }
@@ -139,7 +141,7 @@ public class AgentClassLoader extends ClassLoader {
         for (Jar jar : allJars) {
             JarEntry entry = jar.jarFile.getJarEntry(name);
             if (entry != null) {
-                allResources.add(new URL("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + name));
+                allResources.add(Urls.create("jar:file:" + jar.sourceFile.getAbsolutePath() + "!/" + name, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
             }
         }
 

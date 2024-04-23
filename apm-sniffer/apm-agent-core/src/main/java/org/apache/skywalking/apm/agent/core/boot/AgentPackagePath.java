@@ -18,6 +18,8 @@
 
 package org.apache.skywalking.apm.agent.core.boot;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -62,7 +64,7 @@ public class AgentPackagePath {
                 urlString = urlString.substring(urlString.indexOf("file:"), insidePathIndex);
                 File agentJarFile = null;
                 try {
-                    agentJarFile = new File(new URL(urlString).toURI());
+                    agentJarFile = new File(Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).toURI());
                 } catch (MalformedURLException | URISyntaxException e) {
                     LOGGER.error(e, "Can not locate agent jar file by url:" + urlString);
                 }

@@ -20,6 +20,8 @@ package org.apache.skywalking.apm.plugin.feign.http.v9;
 
 import feign.Request;
 import feign.Response;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.lang.reflect.Method;
 import java.net.URL;
 import org.apache.skywalking.apm.agent.core.context.ContextManager;
@@ -45,7 +47,7 @@ public class LoadBalancerHttpClientInterceptor implements InstanceMethodsAroundI
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes,
                              MethodInterceptResult result) throws Throwable {
         Request request = (Request) allArguments[0];
-        URL url = new URL(request.url());
+        URL url = Urls.create(request.url(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         String operationName = url.getPath();
         FeignResolvedURL feignResolvedURL = PathVarInterceptor.URL_CONTEXT.get();
         if (feignResolvedURL != null) {

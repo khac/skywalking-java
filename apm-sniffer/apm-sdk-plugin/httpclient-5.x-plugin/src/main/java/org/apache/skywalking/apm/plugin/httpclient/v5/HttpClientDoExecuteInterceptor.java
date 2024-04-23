@@ -18,6 +18,8 @@
 
 package org.apache.skywalking.apm.plugin.httpclient.v5;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpHost;
@@ -119,7 +121,7 @@ public abstract class HttpClientDoExecuteInterceptor implements InstanceMethodsA
         if (isUrl(uri)) {
             String requestPath;
             try {
-                requestPath = new URL(uri).getPath();
+                requestPath = Urls.create(uri, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath();
             } catch (MalformedURLException e) {
                 return ERROR_URI;
             }

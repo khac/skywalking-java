@@ -18,6 +18,8 @@
 
 package org.apache.skywalking.apm.plugin.solrj;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,7 +60,7 @@ public class SolrClientInterceptor implements InstanceMethodsAroundInterceptor, 
         HttpSolrClient client = (HttpSolrClient) objInst;
 
         try {
-            URL url = new URL(client.getBaseURL());
+            URL url = Urls.create(client.getBaseURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             instance.setRemotePeer(url.getHost() + ":" + url.getPort());
 
             String path = url.getPath();

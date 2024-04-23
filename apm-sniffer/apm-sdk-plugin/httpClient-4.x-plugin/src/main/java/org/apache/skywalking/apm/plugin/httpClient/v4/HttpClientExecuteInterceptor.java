@@ -18,6 +18,8 @@
 
 package org.apache.skywalking.apm.plugin.httpClient.v4;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -119,7 +121,7 @@ public class HttpClientExecuteInterceptor implements InstanceMethodsAroundInterc
         if (isUrl(uri)) {
             String requestPath;
             try {
-                requestPath = new URL(uri).getPath();
+                requestPath = Urls.create(uri, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath();
             } catch (MalformedURLException e) {
                 return ERROR_URI;
             }

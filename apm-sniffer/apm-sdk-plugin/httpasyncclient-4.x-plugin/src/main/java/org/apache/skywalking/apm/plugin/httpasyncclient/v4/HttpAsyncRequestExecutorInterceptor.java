@@ -17,6 +17,8 @@
 
 package org.apache.skywalking.apm.plugin.httpasyncclient.v4;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.http.HttpHost;
 import org.apache.http.RequestLine;
 import org.apache.http.client.methods.HttpRequestWrapper;
@@ -60,7 +62,7 @@ public class HttpAsyncRequestExecutorInterceptor implements InstanceMethodsAroun
 
         RequestLine requestLine = requestWrapper.getRequestLine();
         String uri = requestLine.getUri();
-        String operationName = uri.startsWith("http") ? new URL(uri).getPath() : uri;
+        String operationName = uri.startsWith("http") ? Urls.create(uri, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath() : uri;
         int port = httpHost.getPort();
         AbstractSpan span = ContextManager.createExitSpan(operationName, contextCarrier, httpHost.getHostName() + ":" + (port == -1 ? 80 : port));
         span.setComponent(ComponentsDefine.HTTP_ASYNC_CLIENT);
