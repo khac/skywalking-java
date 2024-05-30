@@ -77,6 +77,6 @@ public class JsonRpcHttpClientInterceptor implements InstanceMethodsAroundInterc
     }
 
     private boolean isHttps(URL url) {
-        return url.getProtocol().equals("https");
+        return "https".equals(url.getProtocol());
     }
 }

@@ -119,9 +119,9 @@ public class LoadedLibraryCollector {
 
     private static String extractLibJarName(URL url) {
         String protocol = url.getProtocol();
-        if (protocol.equals("file")) {
+        if ("file".equals(protocol)) {
             return extractNameFromFile(url.toString());
-        } else if (protocol.equals("jar")) {
+        } else if ("jar".equals(protocol)) {
             return extractNameFromJar(url.toString());
         } else {
             return "";

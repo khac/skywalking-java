@@ -42,7 +42,7 @@ public class ZGCModule implements GCMetricAccessor {
             String name = bean.getName();
             long gcCount = 0;
             long gcTime = 0;
-            if (name.equals("ZGC")) {
+            if ("ZGC".equals(name)) {
                 long collectionCount = bean.getCollectionCount();
                 gcCount = collectionCount - lastNormalGCCount;
                 lastNormalGCCount = collectionCount;
@@ -50,11 +50,11 @@ public class ZGCModule implements GCMetricAccessor {
                 long time = bean.getCollectionTime();
                 gcTime = time - lastNormalGCTime;
                 lastNormalGCTime = time;
-            } else if (name.equals("ZGC Cycles")) {
+            } else if ("ZGC Cycles".equals(name)) {
                 long collectionCount = bean.getCollectionCount();
                 gcCount = collectionCount - lastNormalGCCount;
                 lastNormalGCCount = collectionCount;
-            } else if (name.equals("ZGC Pauses")) {
+            } else if ("ZGC Pauses".equals(name)) {
                 long time = bean.getCollectionTime();
                 gcTime = time - lastNormalGCTime;
                 lastNormalGCTime = time;

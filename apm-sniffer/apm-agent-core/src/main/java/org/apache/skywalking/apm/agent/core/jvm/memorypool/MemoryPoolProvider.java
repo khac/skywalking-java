@@ -58,10 +58,10 @@ public enum MemoryPoolProvider {
         } else if (name.indexOf("G1") > -1) {
             // G1 collector ( -XX:+UseG1GC )
             return new G1CollectorModule(beans);
-        } else if (name.equals("Survivor Space")) {
+        } else if ("Survivor Space".equals(name)) {
             // Serial collector ( -XX:+UseSerialGC )
             return new SerialCollectorModule(beans);
-        } else if (name.equals("ZHeap")) {
+        } else if ("ZHeap".equals(name)) {
             // ZGC collector ( -XX:+UseZGC )
             return new ZGCCollectorModule(beans);
         } else {

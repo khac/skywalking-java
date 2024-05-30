@@ -117,7 +117,7 @@ public class ClientCallImplGenericCallInterceptor
         String remotePeer = (String) ContextManager.getRuntimeContext().get(CLIENT_STREAM_PEER);
         ContextManager.getRuntimeContext().remove(CLIENT_STREAM_PEER);
         span.setPeer(remotePeer);
-        Arrays.stream(objInst.getClass().getDeclaredMethods()).filter(m -> m.getName().equals("getAttributes"))
+        Arrays.stream(objInst.getClass().getDeclaredMethods()).filter(m -> "getAttributes".equals(m.getName()))
                 .findFirst()
                 .ifPresent(m -> {
                     try {

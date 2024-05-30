@@ -40,17 +40,17 @@ public class ZGCCollectorModule implements MemoryPoolMetricsAccessor {
         for (MemoryPoolMXBean bean : beans) {
             String name = bean.getName();
             PoolType type;
-            if (name.equals("ZHeap")) {
+            if ("ZHeap".equals(name)) {
                 type = PoolType.ZHEAP_USAGE;
-            } else if (name.equals("Metaspace")) {
+            } else if ("Metaspace".equals(name)) {
                 type = PoolType.METASPACE_USAGE;
-            } else if (name.equals("Compressed Class Space")) {
+            } else if ("Compressed Class Space".equals(name)) {
                 type = PoolType.COMPRESSED_CLASS_SPACE_USAGE;
-            } else if (name.equals("CodeHeap 'non-nmethods'")) {
+            } else if ("CodeHeap 'non-nmethods'".equals(name)) {
                 type = PoolType.CODEHEAP_NON_NMETHODS_USAGE;
-            } else if (name.equals("CodeHeap 'profiled nmethods'")) {
+            } else if ("CodeHeap 'profiled nmethods'".equals(name)) {
                 type = PoolType.CODEHEAP_PROFILED_NMETHODS_USAGE;
-            } else if (name.equals("CodeHeap 'non-profiled nmethods'")) {
+            } else if ("CodeHeap 'non-profiled nmethods'".equals(name)) {
                 type = PoolType.CODEHEAP_NON_PROFILED_NMETHODS_USAGE;
             } else {
                 continue;
