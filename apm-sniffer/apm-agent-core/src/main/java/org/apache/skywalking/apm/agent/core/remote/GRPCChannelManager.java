@@ -23,6 +23,7 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 
 import java.net.InetAddress;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -52,7 +53,7 @@ public class GRPCChannelManager implements BootService, Runnable {
     private volatile GRPCChannel managedChannel = null;
     private volatile ScheduledFuture<?> connectCheckFuture;
     private volatile boolean reconnect = true;
-    private final Random random = new Random();
+    private final Random random = new SecureRandom();
     private final List<GRPCChannelListener> listeners = Collections.synchronizedList(new LinkedList<>());
     private volatile List<String> grpcServers;
     private volatile int selectedIdx = -1;

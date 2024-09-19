@@ -19,6 +19,7 @@
 package org.apache.skywalking.e2e.controller;
 
 import com.google.common.base.Strings;
+import java.security.SecureRandom;
 import lombok.RequiredArgsConstructor;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.apache.skywalking.e2e.E2EConfiguration;
@@ -80,7 +81,7 @@ public class UserController {
     }
 
     private long randomSleepLong(int min, int max) {
-        Random rand = new Random();
+        Random rand = new SecureRandom();
         int randomNumber = rand.nextInt((max - min) + 1) + min;
         return randomNumber;
     }

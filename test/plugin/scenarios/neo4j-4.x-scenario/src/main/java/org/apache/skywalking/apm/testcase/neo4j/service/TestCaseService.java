@@ -18,6 +18,7 @@
 
 package org.apache.skywalking.apm.testcase.neo4j.service;
 
+import java.security.SecureRandom;
 import static org.neo4j.driver.Values.parameters;
 
 import java.util.Random;
@@ -43,7 +44,7 @@ public class TestCaseService {
 
     public void sessionScenarioTest(Driver driver) {
         try (Session session = driver.session(SESSION_CONFIG)) {
-            final String result = session.run(QUERY, parameters("name", String.valueOf(new Random().nextInt())))
+            final String result = session.run(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt())))
                     .single()
                     .get(0).asString();
             LOGGER.info("Result from simple session: {}", result);
@@ -52,7 +53,7 @@ public class TestCaseService {
         final AsyncSession asyncSession = driver.asyncSession(SESSION_CONFIG);
 
         final String asyncResult = asyncSession
-                .runAsync(QUERY, parameters("name", String.valueOf(new Random().nextInt())))
+                .runAsync(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt())))
                 .thenCompose(ResultCursor::singleAsync)
                 .exceptionally(error -> {
                     error.printStackTrace();
@@ -64,7 +65,7 @@ public class TestCaseService {
 
         Flux.usingWhen(Mono.fromSupplier(() -> driver.rxSession(SESSION_CONFIG)),
                 session -> Flux
-                        .from(session.run(QUERY, parameters("name", String.valueOf(new Random().nextInt())))
+                        .from(session.run(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt())))
                                 .records())
                         .map(record -> record.get(0).asString())
                         .doOnNext(result -> LOGGER.info("Result from rx session: {}", result)),
@@ -76,7 +77,7 @@ public class TestCaseService {
             final String result = session
                     .writeTransaction(
                             transaction -> transaction
-                                    .run(QUERY, parameters("name", String.valueOf(new Random().nextInt()))).single()
+                                    .run(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt()))).single()
                                     .get(0).asString());
             LOGGER.info("Result from simple transaction: {}", result);
         }
@@ -85,7 +86,7 @@ public class TestCaseService {
         final String asyncResult = asyncSession
                 .writeTransactionAsync(
                         asyncTransaction -> asyncTransaction
-                                .runAsync(QUERY, parameters("name", String.valueOf(new Random().nextInt())))
+                                .runAsync(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt())))
                                 .thenCompose(ResultCursor::singleAsync)
                                 .thenApply(record -> record.get(0).asString()))
                 .toCompletableFuture()
@@ -96,7 +97,7 @@ public class TestCaseService {
                 rxSession ->
                         rxSession.writeTransaction(rxTransaction -> {
                             final RxResult result = rxTransaction
-                                    .run(QUERY, parameters("name", String.valueOf(new Random().nextInt())));
+                                    .run(QUERY, parameters("name", String.valueOf(new SecureRandom().nextInt())));
                             return Flux.from(result.records())
                                     .doOnNext(record -> LOGGER
                                             .info("Result from rx transaction: {}", record.get(0).asString()))
