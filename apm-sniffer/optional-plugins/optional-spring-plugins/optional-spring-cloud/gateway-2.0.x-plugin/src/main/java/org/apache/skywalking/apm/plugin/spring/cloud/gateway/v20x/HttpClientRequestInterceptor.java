@@ -17,6 +17,8 @@
 
 package org.apache.skywalking.apm.plugin.spring.cloud.gateway.v20x;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.function.BiConsumer;
@@ -59,7 +61,7 @@ public class HttpClientRequestInterceptor implements InstanceMethodsAroundInterc
 
         AbstractSpan span = ContextManager.activeSpan();
 
-        URL url = new URL((String) allArguments[1]);
+        URL url = Urls.create((String) allArguments[1], Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         ContextCarrier contextCarrier = new ContextCarrier();
         AbstractSpan abstractSpan = ContextManager.createExitSpan(
                 "SpringCloudGateway/sendRequest", contextCarrier, getPeer(url));

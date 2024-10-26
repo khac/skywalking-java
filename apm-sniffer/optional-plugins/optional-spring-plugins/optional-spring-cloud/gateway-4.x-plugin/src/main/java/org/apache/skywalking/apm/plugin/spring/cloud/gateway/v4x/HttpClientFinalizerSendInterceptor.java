@@ -17,6 +17,8 @@
 
 package org.apache.skywalking.apm.plugin.spring.cloud.gateway.v4x;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.skywalking.apm.agent.core.context.CarrierItem;
 import org.apache.skywalking.apm.agent.core.context.ContextCarrier;
 import org.apache.skywalking.apm.agent.core.context.ContextManager;
@@ -67,7 +69,7 @@ public class HttpClientFinalizerSendInterceptor implements InstanceMethodsAround
         span.prepareForAsync();
 
         if (StringUtil.isNotEmpty(enhanceObjectCache.getUrl())) {
-            URL url = new URL(enhanceObjectCache.getUrl());
+            URL url = Urls.create(enhanceObjectCache.getUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
             ContextCarrier contextCarrier = new ContextCarrier();
             AbstractSpan abstractSpan = ContextManager.createExitSpan(

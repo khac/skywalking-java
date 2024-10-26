@@ -18,6 +18,8 @@
 
 package test.apache.skywalking.apm.testcase.pulsar.controller;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.pulsar.client.api.Consumer;
@@ -141,7 +143,7 @@ public class CaseController {
     }
 
     private void createTopic(String topic, int numOfPartitions) throws IOException {
-        final URL url = new URL("http://pulsar-standalone:8080/admin/v2/persistent/public/default/" + topic + "/partitions");
+        final URL url = Urls.create("http://pulsar-standalone:8080/admin/v2/persistent/public/default/" + topic + "/partitions", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("PUT");
         connection.setDoOutput(true);
